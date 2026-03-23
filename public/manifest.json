@@ -1,0 +1,16 @@
+{
+  "name": "QR-SaaS",
+  "short_name": "QR-SaaS",
+  "description": "Create, customize, and track QR codes with built-in analytics",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#7c3aed",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

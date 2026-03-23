@@ -1,0 +1,98 @@
+# QR-SaaS — Full Documentation for AI Assistants
+
+## Overview
+
+QR-SaaS is a SaaS web application that enables users to create customizable QR codes with tracking and analytics. It serves individuals, creators, small businesses, and enterprises who need branded, trackable QR codes for marketing, menus, social media profiles, and business cards.
+
+## Core Features
+
+### QR Code Generator
+Users create QR codes by entering a destination URL and customizing the visual appearance. Customization options include:
+- Foreground and background colors
+- Dot styles (square, rounded, dots, classy, extra-rounded)
+- Corner square and corner dot styles
+- Logo/image upload overlay
+- Size and margin configuration
+
+### Social Media Templates
+Pre-configured templates for 12+ platforms that automatically set appropriate colors and styling:
+- Instagram (gradient pink/purple)
+- TikTok (black/cyan accent)
+- YouTube (red/white)
+- LinkedIn (blue professional)
+- WhatsApp (green)
+- Twitter/X, Facebook, Snapchat, Telegram, Discord, GitHub, Spotify
+
+### Scan Analytics
+Every QR code generates a unique short URL. When scanned, the system records:
+- Timestamp
+- Anonymized IP (SHA-256 hashed, never stored raw)
+- User agent (device/browser detection)
+- Referrer
+- Country (via Vercel headers)
+
+Users see scan counts, recent activity, and trends on their dashboard.
+
+### Export Options
+- PNG: Any resolution, suitable for digital use
+- SVG: Vector format, infinite scaling for print
+- JPEG: Compressed format for web embedding
+
+## Pricing Details
+
+### Free Plan ($0/forever)
+- 10 QR codes maximum
+- Unlimited scans per QR code
+- Basic color customization
+- PNG download
+- Scan count tracking
+
+### Pro Plan ($9/month)
+- Unlimited QR codes
+- Full customization (all dot/corner styles)
+- PNG, SVG, JPEG export
+- Advanced analytics (device breakdown, referrers)
+- Logo upload on QR codes
+- All social media templates
+- Priority email support
+
+### Business Plan ($29/month)
+- Everything in Pro
+- Team collaboration (multiple users)
+- REST API access for programmatic generation
+- Custom domain for short URLs
+- Bulk QR code generation
+- White-label QR codes (no QR-SaaS branding)
+- Dedicated support
+- SLA guarantee (99.9% uptime)
+
+## Technical Architecture
+
+- Frontend: Next.js 16 with App Router, React Server Components
+- Backend: Supabase (managed PostgreSQL with Row Level Security)
+- Authentication: Better Auth with Supabase adapter
+- Styling: Tailwind CSS 4 with CSS custom properties design system
+- State Management: Zustand (client state), TanStack Query (server state)
+- QR Generation: qr-code-styling library
+- Icons: Lucide React
+- Theming: next-themes (light/dark mode)
+
+## API Endpoints
+
+- POST /api/auth/* — Authentication (Better Auth handler)
+- GET /[shortCode] — QR code redirect with scan tracking
+- GET /api/qr/[id]/analytics — Scan analytics for a specific QR code
+
+## Security
+
+- Row Level Security (RLS) on all Supabase tables
+- IP addresses are SHA-256 hashed before storage
+- HTTPS enforced with HSTS
+- Security headers: X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy
+- Input validation with Zod schemas
+- CSRF protection via Better Auth
+
+## Contact
+
+- Website: https://qr-saas.app
+- Support: Available through the application dashboard

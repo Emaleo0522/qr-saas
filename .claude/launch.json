@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "qr-saas",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "cd C:\\Users\\Ema\\Desktop\\claude\\qr-saas && npm run dev"],
+      "port": 3000
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+# QR-SaaS
+
+> QR-SaaS is a web application for creating, customizing, and tracking QR codes with built-in analytics.
+
+## Features
+
+- Custom QR code generation with colors, dot styles, corner shapes, and logo upload
+- 12+ social media templates (Instagram, TikTok, YouTube, LinkedIn, WhatsApp, etc.)
+- Real-time scan analytics and tracking dashboard
+- Multi-format export: PNG, SVG, JPEG at any resolution
+- Short URL generation for every QR code
+- Mobile-first responsive design with dark mode
+
+## Plans
+
+- Free: 10 QR codes, unlimited scans, basic customization, PNG export
+- Pro ($9/mo): Unlimited QR codes, full customization, all export formats, advanced analytics, logo upload
+- Business ($29/mo): Team collaboration, API access, custom domains, bulk generation, white-label
+
+## Tech Stack
+
+- Next.js (App Router), Supabase (PostgreSQL), Tailwind CSS, Better Auth
+
+## Links
+
+- Website: https://qr-saas.app
+- Full documentation: https://qr-saas.app/llms-full.txt
