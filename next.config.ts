@@ -15,6 +15,7 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: ["pg", "better-auth"],
   async headers() {
     return [
       {
