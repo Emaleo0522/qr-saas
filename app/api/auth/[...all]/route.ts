@@ -13,11 +13,13 @@ async function getAuth() {
   const schema = await import("@/lib/schema");
 
   // postgres.js is serverless-compatible (no native bindings)
+  // prepare: false is required for Supabase Transaction Pooler (pgbouncer)
   const client = postgres(process.env.DATABASE_URL!, {
     ssl: "require",
     max: 1,
     idle_timeout: 20,
     connect_timeout: 10,
+    prepare: false,
   });
   const db = drizzle(client, { schema });
 
