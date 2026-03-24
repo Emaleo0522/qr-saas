@@ -4,7 +4,9 @@ import { getSessionCookie } from "better-auth/cookies";
 
 // Next.js 16 uses proxy.ts instead of middleware.ts
 export function proxy(request: NextRequest) {
-  const sessionCookie = getSessionCookie(request);
+  const sessionCookie = getSessionCookie(request, {
+    cookiePrefix: "qr-saas",
+  });
   const { pathname } = request.nextUrl;
 
   // Redirect authenticated users away from auth pages
