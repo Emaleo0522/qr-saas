@@ -1,33 +1,3 @@
-import { betterAuth } from "better-auth";
-import { Pool } from "pg";
-
-export const auth = betterAuth({
-  baseURL: process.env.BETTER_AUTH_URL,
-  secret: process.env.BETTER_AUTH_SECRET,
-
-  database: new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
-    max: 3,
-    idleTimeoutMillis: 10000,
-    connectionTimeoutMillis: 10000,
-  }),
-
-  emailAndPassword: {
-    enabled: true,
-    minPasswordLength: 8,
-  },
-
-  session: {
-    expiresIn: 60 * 60 * 24 * 7,
-    updateAge: 60 * 60 * 24,
-    cookieCache: {
-      enabled: true,
-      maxAge: 60 * 5,
-    },
-  },
-
-  advanced: {
-    cookiePrefix: "qr-saas",
-  },
-});
+// Auth is initialized via dynamic imports in app/api/auth/[...all]/route.ts
+// to avoid Turbopack bundling issues with postgres.js in Next.js 16.
+// See that route for the actual Better Auth configuration.

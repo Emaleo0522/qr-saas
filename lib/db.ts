@@ -1,9 +1,3 @@
-import { Pool } from "pg";
-
-export const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
-  max: 3,
-  idleTimeoutMillis: 10000,
-  connectionTimeoutMillis: 10000,
-});
+// DB client is initialized via dynamic imports where needed
+// to avoid Turbopack bundling issues with postgres.js in Next.js 16.
+// See app/api/auth/[...all]/route.ts for auth DB usage.

@@ -1,33 +1,24 @@
 export const dynamic = "force-dynamic";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-let _handler: any = null;
+let _auth: any = null;
 
-async function getHandler() {
-  if (_handler) return _handler;
+async function getAuth() {
+  if (_auth) return _auth;
 
   const { betterAuth } = await import("better-auth");
-  const { toNextJsHandler } = await import("better-auth/next-js");
-  const { drizzleAdapter } = await import("better-auth/adapters/drizzle");
-  const { drizzle } = await import("drizzle-orm/postgres-js");
-  const postgres = (await import("postgres")).default;
-  const schema = await import("@/lib/schema");
+  const { Pool } = await import("pg");
 
-  const client = postgres(process.env.DATABASE_URL!, { ssl: "require" });
-  const db = drizzle(client, { schema });
+  const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false },
+    max: 3,
+  });
 
-  const auth = betterAuth({
+  _auth = betterAuth({
     baseURL: process.env.BETTER_AUTH_URL,
     secret: process.env.BETTER_AUTH_SECRET,
-    database: drizzleAdapter(db, {
-      provider: "pg",
-      schema: {
-        user: schema.user,
-        session: schema.session,
-        account: schema.account,
-        verification: schema.verification,
-      },
-    }),
+    database: pool,
     emailAndPassword: { enabled: true, minPasswordLength: 8 },
     session: {
       expiresIn: 60 * 60 * 24 * 7,
@@ -37,16 +28,36 @@ async function getHandler() {
     advanced: { cookiePrefix: "qr-saas" },
   });
 
-  _handler = toNextJsHandler(auth);
-  return _handler;
+  return _auth;
+}
+
+// Next.js 16 + Turbopack may pass Request objects with internal properties
+// that Better Auth doesn't handle well. We rebuild a clean request.
+function toCleanRequest(req: Request, body?: string | null): Request {
+  const url = new URL(req.url);
+  const cleanUrl = (process.env.BETTER_AUTH_URL || "http://localhost:3004") + url.pathname + url.search;
+
+  const headers = new Headers();
+  headers.set("content-type", req.headers.get("content-type") || "application/json");
+  const cookie = req.headers.get("cookie");
+  if (cookie) headers.set("cookie", cookie);
+  const origin = req.headers.get("origin");
+  if (origin) headers.set("origin", origin);
+
+  return new Request(cleanUrl, {
+    method: req.method,
+    headers,
+    body,
+  });
 }
 
 export async function GET(req: Request) {
-  const handler = await getHandler();
-  return handler.GET(req);
+  const auth = await getAuth();
+  return auth.handler(toCleanRequest(req));
 }
 
 export async function POST(req: Request) {
-  const handler = await getHandler();
-  return handler.POST(req);
+  const auth = await getAuth();
+  const body = await req.text();
+  return auth.handler(toCleanRequest(req, body));
 }
