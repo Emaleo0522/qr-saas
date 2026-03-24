@@ -2,14 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { signIn } from "@/lib/auth-client";
 import { AuthLayout } from "@/components/layout/auth-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -21,16 +19,14 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      console.log("[LOGIN] Attempting sign-in...", { email });
       const result = await signIn.email({ email, password });
-      console.log("[LOGIN] Result:", JSON.stringify(result));
       if (result.error) {
         setError(result.error.message || "Invalid credentials");
       } else {
-        router.push("/dashboard");
+        // Full page reload to pick up session cookies
+        window.location.href = "/dashboard";
       }
-    } catch (err) {
-      console.error("[LOGIN] Catch error:", err);
+    } catch {
       setError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);

@@ -2,14 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { signUp } from "@/lib/auth-client";
 import { AuthLayout } from "@/components/layout/auth-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export default function RegisterPage() {
-  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,7 +24,7 @@ export default function RegisterPage() {
       if (result.error) {
         setError(result.error.message || "Could not create account");
       } else {
-        router.push("/dashboard");
+        window.location.href = "/dashboard";
       }
     } catch {
       setError("Something went wrong. Please try again.");
