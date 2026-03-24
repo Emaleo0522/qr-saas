@@ -21,13 +21,16 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
+      console.log("[LOGIN] Attempting sign-in...", { email });
       const result = await signIn.email({ email, password });
+      console.log("[LOGIN] Result:", JSON.stringify(result));
       if (result.error) {
         setError(result.error.message || "Invalid credentials");
       } else {
         router.push("/dashboard");
       }
-    } catch {
+    } catch (err) {
+      console.error("[LOGIN] Catch error:", err);
       setError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
