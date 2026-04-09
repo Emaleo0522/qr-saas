@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# QR SaaS
 
-## Getting Started
+Generador de códigos QR con personalización avanzada, autenticación y dashboard de gestión. Stack moderno full-stack con Next.js 16 y Supabase.
 
-First, run the development server:
+## Funcionalidades
+
+- **Generador QR** — Personalización de colores, estilos, y templates de redes sociales
+- **Preview en tiempo real** — Vista previa instantánea del QR mientras se edita
+- **Descarga** — Export del QR generado
+- **Dashboard** — Gestión de QRs creados por el usuario
+- **Shortlinks** — Redirección via código corto (`/[shortCode]`)
+- **Auth** — Registro y login con Better Auth 1.5
+- **Dark mode** — Tema claro/oscuro con next-themes
+- **SEO** — sitemap.ts y robots.ts dinámicos
+
+## Stack
+
+| Capa | Tech |
+|------|------|
+| Framework | Next.js 16 + React 19 + TypeScript |
+| Estilos | Tailwind CSS 4 |
+| Auth | Better Auth 1.5 |
+| DB | Supabase + Drizzle ORM + postgres.js |
+| Estado | Zustand 5 + TanStack Query 5 |
+| QR | qr-code-styling |
+| IDs | nanoid |
+| Icons | lucide-react |
+
+## Instalación
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Crear `.env.local` con:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```env
+DATABASE_URL=postgresql://...
+BETTER_AUTH_SECRET=...
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Correr migraciones:
 
-## Learn More
+```bash
+npm run migrate
+```
 
-To learn more about Next.js, take a look at the following resources:
+Levantar en desarrollo:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run dev   # puerto 3004
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Estructura
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+qr-saas/
+├── app/
+│   ├── (landing)/        # Landing page pública
+│   ├── (auth)/           # Login y registro
+│   │   ├── login/
+│   │   └── register/
+│   ├── (app)/            # App autenticada
+│   │   ├── dashboard/    # Gestión de QRs
+│   │   └── generator/    # Generador con preview
+│   ├── [shortCode]/      # Redirección de shortlinks
+│   └── api/              # API routes
+├── components/
+│   ├── qr/               # color-picker, style-selector, preview, download, social-templates
+│   ├── landing/          # Componentes de la landing
+│   ├── layout/           # Header, footer, nav
+│   ├── ui/               # Componentes base
+│   └── seo/              # Meta tags, OG
+├── lib/                  # DB, auth, helpers
+├── supabase/migrations/  # Migraciones SQL
+└── types/                # TypeScript types
+```
